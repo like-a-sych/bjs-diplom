@@ -6,8 +6,6 @@ const logoutButton = new LogoutButton();
 logoutButton.action = () => ApiConnector.logout(response => {
 	if (response.success) {
 		location.reload();
-	} else {
-		alert(response.error)
 	}
 });
 // Получение информации о пользователе
@@ -40,7 +38,7 @@ money.addMoneyCallback = (data) => ApiConnector.addMoney(data, response => {
 		money.setMessage(true, `Баланс пополнен на ${data.amount} ${data.currency}`);
 		ProfileWidget.showProfile(response.data);
 	} else {
-		money.setMessage(false, `Невозможно пополнить баланс`);
+		money.setMessage(false, response.error);
 	}
 })
 // Конвертация валюты
@@ -51,7 +49,7 @@ money.conversionMoneyCallback = (data) => {
 			money.setMessage(true, `Вы успешно конвертировали ${data.fromAmount} ${data.fromCurrency} в  ${data.targetCurrency}`);
 			ProfileWidget.showProfile(response.data);
 		} else {
-			money.setMessage(false, `Невозможно конвертировать валюту`);
+			money.setMessage(false, response.error);
 		}
 	})
 }
@@ -66,7 +64,7 @@ money.sendMoneyCallback = data => {
 			money.setMessage(true, `Вы успешно перевели ${data.to} ${data.amount} ${data.currency}`);
 			ProfileWidget.showProfile(response.data);
 		} else {
-			money.setMessage(false, `Невозможно перевести валюту`);
+			money.setMessage(false, response.error);
 		}
 	})
 }
@@ -93,7 +91,7 @@ favorites.addUserCallback = data => {
 			favorites.fillTable(response.data);
 			money.updateUsersList(response.data);
 		} else {
-			favorites.setMessage(false, `Невозможно добавить пользователя`);
+			favorites.setMessage(false, response.error);
 		}
 	})
 }
@@ -107,7 +105,7 @@ favorites.removeUserCallback = id => {
 			favorites.fillTable(response.data);
 			money.updateUsersList(response.data);
 		} else {
-			favorites.setMessage(false, `Невозможно удалить пользователя`);
+			favorites.setMessage(false, response.error);
 		}
 	});
 }
